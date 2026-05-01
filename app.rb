@@ -4,11 +4,19 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
 
-MEMOS = JSON.parse(File.read('memos.json'), symbolize_names: true)
+MEMOS_FILE = 'memos.json'
 
 helpers do
   def h(text)
     Rack::Utils.escape_html(text)
+  end
+
+  def load_memos
+    JSON.parse(File.read(MEMOS_FILE), symbolize_names: true)
+  end
+
+  def save_memos(memos)
+    File.write(MEMOS_FILE, JSON.pretty_generate(memos))
   end
 end
 
@@ -21,52 +29,55 @@ get '/memos/new' do
 end
 
 get '/memos' do
-  @memos = MEMOS
+  @memos = load_memos
   erb :index
 end
 
 get '/memos/:id' do
   id = params[:id].to_i
-  @memo = MEMOS.find { |memo| memo[:id] == id }
+  @memo = load_memos.find { |memo| memo[:id] == id }
   erb :detail
 end
 
 get '/memos/:id/edit' do
   id = params[:id].to_i
-  @memo = MEMOS.find { |memo| memo[:id] == id }
+  @memo = load_memos.find { |memo| memo[:id] == id }
   erb :edit
 end
 
 post '/memos' do
-  new_id = MEMOS.empty? ? 1 : MEMOS.map { |memo| memo[:id] }.max + 1
+  memos = load_memos
+  new_id = memos.empty? ? 1 : memos.map { |memo| memo[:id] }.max + 1
 
-  MEMOS << {
+  memos << {
     id: new_id,
     title: params[:title],
     content: params[:content]
   }
 
-  File.write('memos.json', JSON.pretty_generate(MEMOS))
+  save_memos(memos)
 
   redirect '/memos'
 end
 
 delete '/memos/:id' do
   id = params[:id].to_i
-  MEMOS.delete_if { |memo| memo[:id] == id }
-  File.write('memos.json', JSON.pretty_generate(MEMOS))
+  memos = load_memos
+  memos.delete_if { |memo| memo[:id] == id }
+  save_memos(memos)
   redirect '/memos'
 end
 
 patch '/memos/:id' do
   id = params[:id].to_i
-  memo = MEMOS.find { |memo| memo[:id] == id }
+  memos = load_memos
+  memo = memos.find { |m| m[:id] == id }
   memo[:title] = params[:title]
   memo[:content] = params[:content]
-  File.write('memos.json', JSON.pretty_generate(MEMOS))
+  save_memos(memos)
   redirect '/memos'
 end
 
 not_found do
-  'not Foud!'
+  'Not Found!'
 end
