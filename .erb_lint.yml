@@ -1,0 +1,12 @@
+---
+glob: "**/*.erb"
+
+exclude:
+  - "vendor/**/*"
+  - "vendor/bundle/**/*"
+  - "tmp/**/*"
+  - "log/**/*"
+
+linters:
+  RequireInputAutocomplete:
+    enabled: false
