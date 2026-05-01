@@ -1,0 +1,22 @@
+
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>sinatra</title>
+<link rel="stylesheet" href="<%= url("/style.css") %>">
+</head>
+<body>
+  <h2>メモ</h2>
+  <ul class="memo-list">
+    <% @memos.each do |memo| %>
+     <li><a href="/memos/<%= memo[:id].to_i %>"><%= h(memo[:title]) %></a></li>
+    <% end %>
+</ul>
+<div class="app-button">
+  <a href="/memos/new">メモを追加する</a>
+</div>
+
+</body>
+</html>
