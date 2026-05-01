@@ -72,3 +72,7 @@ patch '/memos/:id' do
   memo[:content] = params[:content]
   redirect '/memos'
 end
+
+not_found do
+  'not Foud!'
+end
