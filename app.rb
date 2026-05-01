@@ -57,14 +57,6 @@ delete '/memos/:id' do
   redirect '/memos'
 end
 
-post '/memos' do
-  id = MEMOS.map { |memo| memo[:id] }.max + 1
-  title = params[:title]
-  content = params[:content]
-  MEMOS << { id: id, title: title, content: content }
-  redirect '/memos'
-end
-
 patch '/memos/:id' do
   id = params[:id].to_i
   memo = MEMOS.find { |memo| memo[:id] == id }
