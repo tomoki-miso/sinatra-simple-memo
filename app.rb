@@ -54,6 +54,7 @@ end
 delete '/memos/:id' do
   id = params[:id].to_i
   MEMOS.delete_if { |memo| memo[:id] == id }
+  File.write('memos.json', JSON.pretty_generate(MEMOS))
   redirect '/memos'
 end
 
@@ -62,6 +63,7 @@ patch '/memos/:id' do
   memo = MEMOS.find { |memo| memo[:id] == id }
   memo[:title] = params[:title]
   memo[:content] = params[:content]
+  File.write('memos.json', JSON.pretty_generate(MEMOS))
   redirect '/memos'
 end
 
