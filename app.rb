@@ -3,6 +3,7 @@
 require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
+require 'securerandom'
 
 MEMOS_FILE = 'memos.json'
 
@@ -17,6 +18,10 @@ helpers do
 
   def save_memos(memos)
     File.write(MEMOS_FILE, JSON.pretty_generate(memos))
+  end
+
+  def find_memo(id)
+    load_memos.find { |memo| memo[:id] == id }
   end
 end
 
@@ -34,20 +39,18 @@ get '/memos' do
 end
 
 get '/memos/:id' do
-  id = params[:id].to_i
-  @memo = load_memos.find { |memo| memo[:id] == id }
+  @memo = find_memo(params[:id])
   erb :detail
 end
 
 get '/memos/:id/edit' do
-  id = params[:id].to_i
-  @memo = load_memos.find { |memo| memo[:id] == id }
+  @memo = find_memo(params[:id])
   erb :edit
 end
 
 post '/memos' do
   memos = load_memos
-  new_id = memos.empty? ? 1 : memos.map { |memo| memo[:id] }.max + 1
+  new_id = SecureRandom.uuid
 
   memos << {
     id: new_id,
