@@ -1,16 +1,6 @@
-
-
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="utf-8">
-  <title>sinatra</title>
-<link rel="stylesheet" href="<%= url("/style.css") %>">
-</head>
-<body>
-  <a href="/memos">← メモ一覧に戻る</a>
-  <h2>あたらしいメモ</h2>
-  <form action="/memos" method="post" class="memo-forms">
+<a href="/memos">← メモ一覧に戻る</a>
+<h2>あたらしいメモ</h2>
+<form action="/memos" method="post" class="memo-forms">
   <div class="memo-form">
     <label for="title">タイトル</label>
     <input type="text" name="title" id="title" required>
@@ -21,10 +11,7 @@
     <textarea name="content" id="content" rows="8" cols="40" required></textarea>
   </div>
 
-<div class="app-button">
+  <div class="app-button">
     <input type="submit" value="メモを登録">
   </div>
 </form>
-
-</body>
-</html>
