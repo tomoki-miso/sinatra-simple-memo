@@ -64,7 +64,7 @@ post '/memos' do
 end
 
 delete '/memos/:id' do
-  id = params[:id].to_i
+  id = params[:id]
   memos = load_memos
   memos.delete_if { |memo| memo[:id] == id }
   save_memos(memos)
@@ -72,7 +72,7 @@ delete '/memos/:id' do
 end
 
 patch '/memos/:id' do
-  id = params[:id].to_i
+  id = params[:id]
   memos = load_memos
   memo = memos.find { |m| m[:id] == id }
   memo[:title] = params[:title]
