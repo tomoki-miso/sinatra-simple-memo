@@ -1,0 +1,17 @@
+<a href="/memos">← メモ一覧に戻る</a>
+<h2>あたらしいメモ</h2>
+<form action="/memos" method="post" class="memo-forms">
+  <div class="memo-form">
+    <label for="title">タイトル</label>
+    <input type="text" name="title" id="title" required>
+  </div>
+
+  <div class="memo-form">
+    <label for="content">内容</label>
+    <textarea name="content" id="content" rows="8" cols="40" required></textarea>
+  </div>
+
+  <div class="app-button">
+    <input type="submit" value="メモを登録">
+  </div>
+</form>

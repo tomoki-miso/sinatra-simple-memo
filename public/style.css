@@ -1,0 +1,123 @@
+h2 {
+  padding: 0.6em 0.5em;
+  color: #494949;
+  background: #f4f4f4;
+  border-left: solid 5px #7db4e6;
+  border-bottom: solid 3px #d7d7d7;
+}
+
+/* メモ一覧 */
+.memo-list,
+.memo-list li {
+  padding: 0;
+  list-style: none;
+}
+
+.memo-list li {
+  margin-bottom: 8px;
+}
+
+.memo-list li a {
+  display: block;
+  padding: 1em;
+  line-height: 2;
+  background: #e4f0f1d8;
+  color: #505050;
+  border-radius: 16px;
+  text-decoration: none;
+}
+
+.memo-list li a::before {
+  display: inline-block;
+  vertical-align: middle;
+  content: '';
+  width: 1em;
+  height: 1em;
+  background: #fff;
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+/* メモフォーム */
+.memo-forms {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.memo-form {
+  margin-bottom: 16px;
+}
+
+.memo-form label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #505050;
+  letter-spacing: 1px;
+}
+
+.memo-form input[type="text"],
+.memo-form textarea {
+  display: block;
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #505050;
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 10px;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.12);
+  box-sizing: border-box;
+}
+
+.memo-form input[type="text"]:focus,
+.memo-form textarea:focus {
+  outline: none;
+  border-color: #7db4e6;
+  box-shadow: 0 0 0 3px rgba(125, 180, 230, 0.25);
+}
+
+.memo-form textarea {
+  min-height: 160px;
+  resize: vertical;
+}
+
+.app-button a,
+.app-button input[type="submit"] {
+  display: block;
+  width: 220px;
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 10px 25px;
+
+  color: #fff;
+  background: #7db4e6;
+  border: none;
+  border-radius: 3px;
+  font: inherit;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+.app-button a:hover,
+.app-button input[type="submit"]:hover {
+  background: #5b9edd;
+  text-decoration: none;
+}
+
+.update-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+body {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 32px 16px;
+}

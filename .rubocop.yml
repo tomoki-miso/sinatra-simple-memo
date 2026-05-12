@@ -1,0 +1,9 @@
+inherit_gem:
+  rubocop-fjord:
+    - "config/rubocop.yml"
+
+AllCops:
+  Exclude:
+    - "vendor/**/*"
+    - "tmp/**/*"
+    - "log/**/*"
