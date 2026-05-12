@@ -46,6 +46,7 @@ GEM
     i18n (1.14.8)
       concurrent-ruby (~> 1.0)
     json (2.19.4)
+    kgio (2.11.4)
     language_server-protocol (3.17.0.5)
     lint_roller (1.1.0)
     logger (1.7.0)
@@ -68,6 +69,8 @@ GEM
     parser (3.3.11.1)
       ast (~> 2.4.1)
       racc
+    pg (1.6.3)
+    pg (1.6.3-arm64-darwin)
     prism (1.9.0)
     puma (8.0.1)
       nio4r (~> 2.0)
@@ -90,6 +93,7 @@ GEM
       loofah (~> 2.25)
       nokogiri (>= 1.15.7, != 1.16.7, != 1.16.6, != 1.16.5, != 1.16.4, != 1.16.3, != 1.16.2, != 1.16.1, != 1.16.0.rc1, != 1.16.0)
     rainbow (3.1.1)
+    raindrops (0.20.1)
     rbs (4.0.2)
       logger
       prism (>= 1.6.0)
@@ -147,6 +151,9 @@ GEM
     unicode-display_width (3.2.0)
       unicode-emoji (~> 4.1)
     unicode-emoji (4.2.0)
+    unicorn (6.1.0)
+      kgio (~> 2.6)
+      raindrops (~> 0.7)
     uri (1.1.1)
     zlib (3.2.3)
 
@@ -156,6 +163,7 @@ PLATFORMS
 
 DEPENDENCIES
   erb_lint
+  pg
   puma (~> 8.0)
   rackup (~> 2.3)
   rubocop
@@ -164,6 +172,7 @@ DEPENDENCIES
   rubocop-rubycw (~> 0.2.2)
   sinatra (~> 4.2)
   sinatra-contrib
+  unicorn
 
 BUNDLED WITH
    2.5.16
