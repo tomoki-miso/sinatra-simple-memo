@@ -10,32 +10,28 @@ helpers do
     Rack::Utils.escape_html(text)
   end
 
-  def conn
-    settings.db
-  end
-
   def read_memos
-    response = conn.exec('SELECT * FROM memos ORDER BY id DESC;')
+    response = settings.db.exec('SELECT * FROM memos ORDER BY id DESC;')
     response.to_a.map do |row|
       Memo.new(row['id'], row['title'], row['content'])
     end
   end
 
   def read_memo(id)
-    response = conn.exec_params('SELECT * FROM memos WHERE id = $1;', [id]).first
+    response = settings.db.exec_params('SELECT * FROM memos WHERE id = $1;', [id]).first
     Memo.new(response['id'], response['title'], response['content'])
   end
 
   def post_memo(title, content)
-    conn.exec_params('INSERT INTO memos(title, content) VALUES ($1, $2);', [title, content])
+    settings.db.exec_params('INSERT INTO memos(title, content) VALUES ($1, $2);', [title, content])
   end
 
   def edit_memo(title, content, id)
-    conn.exec_params('UPDATE memos SET title = $1, content = $2 WHERE id = $3;', [title, content, id])
+    settings.db.exec_params('UPDATE memos SET title = $1, content = $2 WHERE id = $3;', [title, content, id])
   end
 
   def delete_memo(id)
-    conn.exec_params('DELETE FROM memos WHERE id = $1;', [id])
+    settings.db.exec_params('DELETE FROM memos WHERE id = $1;', [id])
   end
 end
 
