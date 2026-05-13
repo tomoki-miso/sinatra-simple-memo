@@ -13,7 +13,5 @@ gem 'rubocop-fjord'
 gem 'rubocop-on-rbs'
 gem 'rubocop-rubycw', '~> 0.2.2'
 
-# Unicorn
-gem 'unicorn'
 
 gem 'pg'
