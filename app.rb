@@ -76,7 +76,6 @@ delete '/memos/:id' do
 end
 
 patch '/memos/:id' do
-  @memo = read_memo(params[:id])
   edit_memo(params[:title], params[:content], params[:id])
   redirect '/memos'
 end
