@@ -11,7 +11,7 @@ helpers do
   end
 
   def conn
-    @conn ||= PG.connect(dbname: 'postgres')
+    settings.db
   end
 
   def read_memos
@@ -40,7 +40,9 @@ helpers do
 end
 
 configure do
-  PG.connect(dbname: 'postgres').exec(File.read(File.expand_path('db/schema.sql', __dir__)))
+  schema_sql = File.read(File.expand_path('db/schema.sql', __dir__))
+  set :db, PG.connect(dbname: 'postgres')
+  settings.db.exec(schema_sql)
 end
 
 get '/' do
