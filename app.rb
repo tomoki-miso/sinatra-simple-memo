@@ -15,7 +15,7 @@ helpers do
   end
 
   def read_memos
-    response = conn.exec('SELECT * FROM memos')
+    response = conn.exec('SELECT * FROM memos ORDER BY id DESC;')
     response.to_a.map do |row|
       Memo.new(row['id'], row['title'], row['content'])
     end
