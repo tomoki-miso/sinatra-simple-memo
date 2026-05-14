@@ -2,27 +2,43 @@
 
 require 'sinatra'
 require 'sinatra/reloader'
-require 'json'
-require 'securerandom'
-
-MEMOS_FILE = 'memos.json'
+require 'pg'
+require_relative 'models/memo'
 
 helpers do
   def h(text)
     Rack::Utils.escape_html(text)
   end
 
-  def load_memos
-    JSON.parse(File.read(MEMOS_FILE), symbolize_names: true)
+  def read_memos
+    response = settings.db.exec('SELECT * FROM memos ORDER BY id DESC;')
+    response.to_a.map do |row|
+      Memo.new(row['id'], row['title'], row['content'])
+    end
   end
 
-  def save_memos(memos)
-    File.write(MEMOS_FILE, JSON.pretty_generate(memos))
+  def read_memo(id)
+    response = settings.db.exec_params('SELECT * FROM memos WHERE id = $1;', [id]).first
+    Memo.new(response['id'], response['title'], response['content'])
   end
 
-  def find_memo(id)
-    load_memos.find { |memo| memo[:id] == id }
+  def post_memo(title, content)
+    settings.db.exec_params('INSERT INTO memos(title, content) VALUES ($1, $2);', [title, content])
   end
+
+  def edit_memo(title, content, id)
+    settings.db.exec_params('UPDATE memos SET title = $1, content = $2 WHERE id = $3;', [title, content, id])
+  end
+
+  def delete_memo(id)
+    settings.db.exec_params('DELETE FROM memos WHERE id = $1;', [id])
+  end
+end
+
+configure do
+  schema_sql = File.read(File.expand_path('db/schema.sql', __dir__))
+  set :db, PG.connect(dbname: 'postgres')
+  settings.db.exec(schema_sql)
 end
 
 get '/' do
@@ -34,53 +50,40 @@ get '/memos/new' do
 end
 
 get '/memos' do
-  @memos = load_memos
+  @memos = read_memos
   erb :index
 end
 
 get '/memos/:id' do
-  @memo = find_memo(params[:id])
+  @memo = read_memo(params[:id])
   erb :detail
 end
 
 get '/memos/:id/edit' do
-  @memo = find_memo(params[:id])
+  @memo = read_memo(params[:id])
   erb :edit
 end
 
 post '/memos' do
-  memos = load_memos
-  new_id = SecureRandom.uuid
-
-  memos << {
-    id: new_id,
-    title: params[:title],
-    content: params[:content]
-  }
-
-  save_memos(memos)
+  post_memo(params[:title], params[:content])
 
   redirect '/memos'
 end
 
 delete '/memos/:id' do
-  id = params[:id]
-  memos = load_memos
-  memos.delete_if { |memo| memo[:id] == id }
-  save_memos(memos)
+  delete_memo(params[:id])
   redirect '/memos'
 end
 
 patch '/memos/:id' do
-  id = params[:id]
-  memos = load_memos
-  memo = memos.find { |m| m[:id] == id }
-  memo[:title] = params[:title]
-  memo[:content] = params[:content]
-  save_memos(memos)
+  edit_memo(params[:title], params[:content], params[:id])
   redirect '/memos'
 end
 
 not_found do
   'Not Found!'
+end
+
+error do
+  'Internal Server Error'
 end
